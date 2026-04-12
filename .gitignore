@@ -1,0 +1,11 @@
+# 数据集
+cifar-10-python.tar.gz
+cifar-10-batches-py/
+
+# 模型权重
+*.pth
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
