@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python neural_network.py)",
+      "Bash(python3 /Users/zzy/code/neural_network.py)",
+      "Bash(pip3 install:*)",
+      "Bash(python3 cifar10_mlp.py)",
+      "Bash(python3 /Users/zzy/code/cifar10_mlp.py)",
+      "Bash(python3 -c \"import torch; print\\(torch.__version__\\)\")",
+      "Bash(tee cifar10_numpy_log.txt)",
+      "Bash(python3 custom_layers.py)",
+      "Bash(python3 /Users/zzy/code/custom_layers.py)",
+      "Bash(python3 -c \":*)",
+      "Bash(python3 cifar10_cnn.py)"
+    ]
+  }
+}
