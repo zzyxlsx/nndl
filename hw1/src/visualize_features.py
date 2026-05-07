@@ -1,11 +1,4 @@
-"""
-特征映射可视化
-- 卷积核可视化（第一层）
-- 各隐藏层 feature map 可视化（forward hook）
-- 不同类别图像的激活对比
-需先运行 cifar10_cnn.py 生成 cifar10_cnn.pth
-"""
-
+import os
 import numpy as np
 import torch
 import matplotlib
@@ -16,29 +9,31 @@ from cifar10_cnn import CIFAR10CNN, build_loaders, DEVICE
 from custom_layers import ManualConv2d
 from cifar10_mlp import CIFAR10_CLASSES
 
+_SRC_DIR  = os.path.dirname(os.path.abspath(__file__))
+_ROOT_DIR = os.path.join(_SRC_DIR, '..')
+_OUT_DIR  = os.path.join(_ROOT_DIR, 'outputs')
+os.makedirs(_OUT_DIR, exist_ok=True)
 
-# ─────────────────────────── 加载模型 ───────────────────────────
 
 def load_model():
     model = CIFAR10CNN().to(DEVICE)
-    model.load_state_dict(torch.load('cifar10_cnn.pth', map_location=DEVICE))
+    model_path = os.path.join(_OUT_DIR, 'cifar10_cnn.pth')
+    model.load_state_dict(torch.load(model_path, map_location=DEVICE))
     model.eval()
     return model
 
 
-# ─────────────────────────── 1. 卷积核可视化 ────────────────────
-
-def plot_conv_kernels(model, path='vis_kernels.png'):
-    """可视化第一层 32 个 3x3x3 卷积核（RGB 彩色）"""
-    w = model.conv1.weight.detach().cpu()  # (32, 3, 3, 3)
-    # 归一化到 [0,1]
+def plot_conv_kernels(model, path=None):
+    if path is None:
+        path = os.path.join(_OUT_DIR, 'vis_kernels.png')
+    w = model.conv1.weight.detach().cpu()
     w_min, w_max = w.min(), w.max()
     w = (w - w_min) / (w_max - w_min + 1e-8)
 
     fig, axes = plt.subplots(4, 8, figsize=(12, 6))
-    fig.suptitle('Conv1 Kernels (32 filters, 3×3×3)', fontsize=13)
+    fig.suptitle('Conv1 Kernels (32 filters, 3x3x3)', fontsize=13)
     for i, ax in enumerate(axes.flat):
-        kernel = w[i].permute(1, 2, 0).numpy()  # (3,3,3) -> (3,3,3) HWC
+        kernel = w[i].permute(1, 2, 0).numpy()
         ax.imshow(kernel)
         ax.axis('off')
     plt.tight_layout()
@@ -46,10 +41,7 @@ def plot_conv_kernels(model, path='vis_kernels.png'):
     print(f'Saved {path}')
 
 
-# ─────────────────────────── 2. Feature Map 可视化 ──────────────
-
 def register_hooks(model):
-    """在每个 ManualConv2d 后注册 forward hook，捕获激活输出"""
     feature_maps = {}
     hooks = []
 
@@ -65,11 +57,9 @@ def register_hooks(model):
     return feature_maps, hooks
 
 
-def plot_feature_maps(model, image_tensor, label, path_prefix='vis_fmap'):
-    """
-    对单张图像跑 forward，可视化每层前 16 个 channel 的 feature map。
-    image_tensor: (1, 3, 32, 32)
-    """
+def plot_feature_maps(model, image_tensor, label, path_prefix=None):
+    if path_prefix is None:
+        path_prefix = os.path.join(_OUT_DIR, 'vis_fmap')
     feature_maps, hooks = register_hooks(model)
 
     with torch.no_grad():
@@ -79,16 +69,15 @@ def plot_feature_maps(model, image_tensor, label, path_prefix='vis_fmap'):
         h.remove()
 
     layer_titles = {
-        'conv1': 'Layer 1 – Conv(3→32)  32×32',
-        'conv2': 'Layer 2 – Conv(32→32) 32×32',
-        'conv3': 'Layer 4 – Conv(32→64) 16×16',
-        'conv4': 'Layer 5 – Conv(64→64) 16×16',
-        'conv5': 'Layer 7 – Conv(64→128) 8×8',
+        'conv1': 'Layer 1 - Conv(3->32)  32x32',
+        'conv2': 'Layer 2 - Conv(32->32) 32x32',
+        'conv3': 'Layer 4 - Conv(32->64) 16x16',
+        'conv4': 'Layer 5 - Conv(64->64) 16x16',
+        'conv5': 'Layer 7 - Conv(64->128) 8x8',
     }
 
     for name, fmap in feature_maps.items():
-        # fmap: (1, C, H, W)
-        fmap = fmap[0]          # (C, H, W)
+        fmap = fmap[0]
         n_show = min(16, fmap.shape[0])
         fig, axes = plt.subplots(2, 8, figsize=(14, 4))
         fig.suptitle(f'{layer_titles[name]}  |  input: {label}', fontsize=11)
@@ -105,14 +94,11 @@ def plot_feature_maps(model, image_tensor, label, path_prefix='vis_fmap'):
         print(f'Saved {save_path}')
 
 
-# ─────────────────────────── 3. 不同类别激活对比 ────────────────
-
-def plot_activation_comparison(model, test_loader, path='vis_compare.png'):
-    """
-    从测试集各取一张正确分类的图，可视化 conv1 激活的均值强度对比。
-    """
+def plot_activation_comparison(model, test_loader, path=None):
+    if path is None:
+        path = os.path.join(_OUT_DIR, 'vis_compare.png')
     model.eval()
-    samples = {}   # class_id -> image tensor
+    samples = {}
 
     for X, y in test_loader:
         with torch.no_grad():
@@ -149,8 +135,6 @@ def plot_activation_comparison(model, test_loader, path='vis_compare.png'):
     print(f'Saved {path}')
 
 
-# ─────────────────────────── 主程序 ─────────────────────────────
-
 if __name__ == '__main__':
     torch.manual_seed(0)
     model = load_model()
@@ -158,10 +142,8 @@ if __name__ == '__main__':
 
     _, _, test_loader = build_loaders(batch_size=256)
 
-    # 1. 卷积核
     plot_conv_kernels(model)
 
-    # 2. 对 3 个类别各取一张图，可视化各层 feature map
     samples = {}
     for X, y in test_loader:
         with torch.no_grad():
@@ -169,7 +151,6 @@ if __name__ == '__main__':
         for i in range(len(y)):
             c = y[i].item()
             if c not in samples and preds[i].item() == c and c in [0, 3, 8]:
-                # airplane(0), cat(3), ship(8)
                 samples[c] = (X[i], CIFAR10_CLASSES[c])
         if len(samples) == 3:
             break
@@ -177,7 +158,6 @@ if __name__ == '__main__':
     for c, (img, label) in samples.items():
         plot_feature_maps(model, img.unsqueeze(0), label)
 
-    # 3. 各类别激活对比
     plot_activation_comparison(model, test_loader)
 
     print('\nAll visualizations done.')

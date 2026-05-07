@@ -1,0 +1,15 @@
+Device: cuda
+
+  Basic RNN
+  ------------------------------------------------------
+  in-distribution  (len 5-8,  val 0-15)         acc=0.0000
+  longer sequences (len 9-12, val 0-15)         acc=0.0000
+  larger values    (len 5-8,  val 16-31)        acc=0.0000
+  both OOD         (len 9-12, val 16-31)        acc=0.0000
+
+  LSTM
+  ------------------------------------------------------
+  in-distribution  (len 5-8,  val 0-15)         acc=1.0000
+  longer sequences (len 9-12, val 0-15)         acc=0.9350
+  larger values    (len 5-8,  val 16-31)        acc=0.0000
+  both OOD         (len 9-12, val 16-31)        acc=0.0000

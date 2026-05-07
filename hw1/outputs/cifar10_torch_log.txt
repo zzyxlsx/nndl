@@ -1,0 +1,48 @@
+Loading CIFAR-10...
+Train: (45000, 3072), Val: (5000, 3072), Test: (10000, 3072)
+Epoch    1 | train_err=  --   | val_err=0.6884
+Epoch    2 | train_err=  --   | val_err=0.6010
+Epoch    3 | train_err=  --   | val_err=0.5596
+Epoch    4 | train_err=  --   | val_err=0.5502
+Epoch    5 | train_err=0.4832 | val_err=0.5122
+Epoch    6 | train_err=  --   | val_err=0.4916
+Epoch    7 | train_err=  --   | val_err=0.4788
+Epoch    8 | train_err=  --   | val_err=0.4734
+Epoch    9 | train_err=  --   | val_err=0.4890
+Epoch   10 | train_err=0.3743 | val_err=0.4554
+Epoch   11 | train_err=  --   | val_err=0.4718
+Epoch   12 | train_err=  --   | val_err=0.4532
+Epoch   13 | train_err=  --   | val_err=0.4468
+Epoch   14 | train_err=  --   | val_err=0.4676
+Epoch   15 | train_err=0.3535 | val_err=0.4866
+Epoch   16 | train_err=  --   | val_err=0.5114
+Epoch   17 | train_err=  --   | val_err=0.4498
+Epoch   18 | train_err=  --   | val_err=0.4694
+Epoch   19 | train_err=  --   | val_err=0.4600
+Epoch   20 | train_err=0.2801 | val_err=0.4630
+Epoch   21 | train_err=  --   | val_err=0.4712
+Epoch   22 | train_err=  --   | val_err=0.4692
+Epoch   23 | train_err=  --   | val_err=0.4546
+Epoch   24 | train_err=  --   | val_err=0.4370
+Epoch   25 | train_err=0.1882 | val_err=0.4372
+Epoch   26 | train_err=  --   | val_err=0.4782
+Epoch   27 | train_err=  --   | val_err=0.4404
+Epoch   28 | train_err=  --   | val_err=0.4694
+Epoch   29 | train_err=  --   | val_err=0.4438
+Epoch   30 | train_err=0.1314 | val_err=0.4336
+
+Test Accuracy: 55.11%
+
+── Per-class Accuracy ──
+  airplane    : 68.8%
+  automobile  : 62.4%
+  bird        : 44.1%
+  cat         : 38.8%
+  deer        : 41.8%
+  dog         : 47.3%
+  frog        : 67.5%
+  horse       : 54.3%
+  ship        : 65.1%
+  truck       : 61.0%
+Curve saved to /home/zzy/nndl/src/../outputs/cifar10_torch_curve.png
+Confusion matrix saved to /home/zzy/nndl/src/../outputs/cifar10_torch_confusion.png

@@ -1,0 +1,42 @@
+Device: cuda
+
+============================================================
+  Training Basic RNN Seq2Seq
+============================================================
+  Epoch   1/50  loss=2.6630  test_acc=0.0005
+  Epoch   5/50  loss=2.0882  test_acc=0.0000
+  Epoch  10/50  loss=2.0708  test_acc=0.0005
+  Epoch  15/50  loss=2.0614  test_acc=0.0000
+  Epoch  20/50  loss=2.0193  test_acc=0.0000
+  Epoch  25/50  loss=1.9928  test_acc=0.0000
+  Epoch  30/50  loss=1.9342  test_acc=0.0000
+  Epoch  35/50  loss=1.9205  test_acc=0.0000
+  Epoch  40/50  loss=1.9435  test_acc=0.0005
+  Epoch  45/50  loss=1.8891  test_acc=0.0000
+  Epoch  50/50  loss=1.8550  test_acc=0.0000
+
+  Basic RNN Seq2Seq  final test accuracy: 0.0000  (best: 0.0005)
+
+============================================================
+  Training LSTM Seq2Seq
+============================================================
+  Epoch   1/50  loss=2.8087  test_acc=0.0000
+  Epoch   5/50  loss=1.0564  test_acc=0.1825
+  Epoch  10/50  loss=0.1572  test_acc=0.9990
+  Epoch  15/50  loss=0.0404  test_acc=1.0000
+  Epoch  20/50  loss=0.0196  test_acc=1.0000
+  Epoch  25/50  loss=0.0118  test_acc=1.0000
+  Epoch  30/50  loss=0.0081  test_acc=1.0000
+  Epoch  35/50  loss=0.0059  test_acc=1.0000
+  Epoch  40/50  loss=0.0045  test_acc=1.0000
+  Epoch  45/50  loss=0.0036  test_acc=1.0000
+  Epoch  50/50  loss=0.0029  test_acc=1.0000
+
+  LSTM Seq2Seq  final test accuracy: 1.0000  (best: 1.0000)
+
+============================================================
+  Summary
+============================================================
+  Basic RNN  test accuracy: 0.0000
+  LSTM       test accuracy: 1.0000
+  LSTM improvement over RNN: +1.0000
